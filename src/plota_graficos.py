@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+from matplotlib.colors import LinearSegmentedColormap
+import numpy as np
 
 def plot_barras(titulo, x, y, xlim, n_colors=10):
     '''
@@ -91,3 +93,52 @@ def plot_barras_grupos(dados, titulo):
     ax.legend(fontsize=14, ncol=2)
 
     plt.show()
+    
+def plota_matriz_correlacao(dados, matriz = 'upper'):
+    '''
+    ----------------------------------------------------------------------------
+    Plota a matiz de correlação
+    ----------------------------------------------------------------------------
+    @param dados  - DataFrame
+    @param matriz - 'upper'    - triangula superior
+                    'lower'    - triangular inferio
+                    'complete' - a matriz completa
+    ----------------------------------------------------------------------------
+    '''
+
+    matriz_coor = dados.iloc[:,:-1].corr().abs()
+    
+    if(matriz == 'upper' ):
+        matriz_bool = np.triu(np.ones(matriz_coor.shape),  k = 1).astype(bool)
+        matriz_coor = matriz_coor.where(matriz_bool, other=np.nan)
+    elif(matriz == 'lower' ):
+        matriz_bool = np.tril(np.ones(matriz_coor.shape),  k = -1).astype(bool)
+        matriz_coor = matriz_coor.where(matriz_bool, other=np.nan)
+
+    fig, ax = plt.subplots(figsize=(12,8))
+
+    ax.set_title("Matriz de correlação", fontsize=24, loc='left', color = 'gray')
+
+    myColors=['green', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray','blue' ]
+    
+    map = LinearSegmentedColormap.from_list('Custom', myColors, len(myColors))
+    
+    
+    ax = sns.heatmap(matriz_coor,
+                     vmin=.0,
+                     vmax=1.0,
+                     center=0.5,
+                     cmap=map,
+                     xticklabels=[],
+                     yticklabels=[],
+                     ax=ax)
+    
+    colorbar = ax.collections[0].colorbar
+
+    num = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5 , 0.6, 0.7, 0.8, 0.9, 1.0]
+    colorbar = ax.collections[0].colorbar
+    colorbar.set_ticks(num)
+    colorbar.set_ticklabels(num)
+    plt.show()    
+    
+    

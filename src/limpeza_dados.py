@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
 def pacientes_por_janela_ICU(dados):
   '''
   ------------------------------------------------------------------------------
