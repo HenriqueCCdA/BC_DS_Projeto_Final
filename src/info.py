@@ -74,4 +74,28 @@ def escreve_somente_as_colunas(dados, arquivo='colunas.csv'):
 
         for i, row in enumerate(dados.columns):
             writer.writerow([i, row])
-            
+                        
+def proporcao_y(y):
+    '''
+    ----------------------------------------------------------------------------
+    Mostra a proporcao do y 
+    ----------------------------------------------------------------------------
+    @param y    - DataSeries
+    ----------------------------------------------------------------------------
+    ''' 
+    p = y.value_counts(normalize=True)
+
+    print(f"Proporcao do {y.name}")
+    for l , v in zip(p.index, p.values):
+        print(f"Campo {l} ->  {v*100:.2f}%")
+        
+def porcentagem_teste_treino_val(y, y_val, y_cv):
+    '''
+    ------------------------------------------------------------------------
+    Mostra o numero de entradas em cada dataset
+    ------------------------------------------------------------------------
+    '''
+    n = len(y)
+    print(f'Número total de entradas                         : {len(y)}')
+    print(f'Número total de entradas para validacao          : {len(y_val)}')
+    print(f'Número total de entradas para o Cross Validation : {len(y_cv)}')

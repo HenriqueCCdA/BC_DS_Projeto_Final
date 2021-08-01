@@ -141,4 +141,55 @@ def plota_matriz_correlacao(dados, matriz = 'upper'):
     colorbar.set_ticklabels(num)
     plt.show()    
     
+def plota_treino_teste_auc(titulo, teste_auc, treino_auc, rank, hp_melhor):
+    '''
+    ------------------------------------------------------------
+    Plota a curva AUC para o teste de hyperparamentros
+    ------------------------------------------------------------    
+    @param titulo     - Titulo do grafico
+    @param teste_auc  - Valores AUC dos Teste
+    @param treino_auc - Valores AUC dos Treino
+    @param rank       - colocação dos modelos
+    @param hp_melhor  - hyperparametro que gera o melhor modelo
+    -------------------------------------------------------------
+    ''' 
+    
+    fig, ax = plt.subplots(figsize=(16,8))
+
+    fig.set_facecolor('white')
+    ax.set_facecolor('white')
+    
+    for melhor_pos, v in enumerate(rank):
+        if(v == 1):
+            break
+    
+    fig.text(x = 0.08, y = 0.95,
+         s = titulo,
+         fontsize=24, color = 'gray') 
+    
+    x = range(0, len(teste_auc))
+
+    ax.plot(x,  teste_auc, color='green', lw=2)
+    ax.plot(x, treino_auc, color='blue', lw=2)
+
+    ax.set_xlim(x[0], x[-1]+1)
+    ax.set_ylim(0.0, 1.01)
+
+    ax.set_ylabel('AUC Médio', loc = 'top', fontsize= 16, color='dimgray')
+    ax.set_xlabel('Número do teste do SearchCV', loc = 'left', fontsize= 16, color='dimgray')
+    
+    plt.xticks(x, fontsize= 14, color='gray')
+    plt.yticks(fontsize= 14, color='gray')
+    
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('gray')
+    ax.spines['left'].set_color('gray')   
+    
+    ax.annotate(text='Treino', xy=(x[-1], max(treino_auc)), fontsize=16, color = 'blue')
+    ax.annotate(text='Teste' , xy=(x[-1], max(teste_auc )), fontsize=16, color = 'green')
+    
+    ax.vlines(x=melhor_pos, ymin=0, ymax=2, ls='--', color='black')
+    ax.annotate(text = 'Melhor conjuto:' + str(hp_melhor), xy=(melhor_pos+0.1, 0.2), rotation=0, fontsize=12)
+    plt.show()
     
