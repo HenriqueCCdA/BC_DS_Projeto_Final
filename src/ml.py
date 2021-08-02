@@ -5,6 +5,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 
 def retorna_x_y(dados):
     '''
@@ -151,8 +152,8 @@ def obtem_os_resultados_SearchCV(clf):
     
     return pd.DataFrame(aux), clf.best_estimator_, clf.best_params_
 
-def roda_modelo_cv_randomized_search_cv(modelo,
-                                        x,
+def treina_modelo_randomized_search_cv(modelo,
+                                       x,
                                         y,
                                         parameters,
                                         n_splits = 5,
@@ -162,7 +163,7 @@ def roda_modelo_cv_randomized_search_cv(modelo,
 
     '''
     ------------------------------------------------------------
-    Roda um modelo ML utilizando o croosvalidation com  
+    Roda um modelo ML utilizando o Cross Validation com  
     RepeatedStratifiedKFold
     ------------------------------------------------------------    
     @param modelo      - modelo istânciado não treinado
@@ -196,6 +197,56 @@ def roda_modelo_cv_randomized_search_cv(modelo,
                              return_train_score=True,
                              n_iter=n_iter,
                              refit=True) 
+
+    clf.fit(x, y)
+    resultados, melhor_modelo, melhores_hyperparamentros = obtem_os_resultados_SearchCV(clf)
+
+    return resultados, melhor_modelo, melhores_hyperparamentros
+
+def treina_modelo_grid_search_cv(modelo,
+                                 x,
+                                 y,
+                                 parameters,
+                                 n_splits = 5,
+                                 n_repeats = 5,
+                                 n_iter = 10,
+                                 seed = 14715):
+
+    '''
+    ------------------------------------------------------------
+    Roda um modelo ML utilizando o Cross Validation com  
+    RepeatedStratifiedKFold
+    ------------------------------------------------------------    
+    @param modelo      - modelo istânciado não treinado
+    @param x           - DataFrame com os dados para o cv 
+    @param y           - DataFrame com os dados para o cv
+    @param paramentros - Dicionario com os parametros a serem testados
+    @param n_splits    - numero de divisões da base de dados do cv
+    @param n_repeats   - numero de repetições que n_div e feita pelo
+                         RepeatedStratifiedKFold
+    @param n_iter      - numero de iterações do RandomizedSearchCV
+    @param seed        - semente dos numeros aletorios usado no 
+                       np.random.seed
+    -------------------------------------------------------------
+    @return retorna uma tupla (a, b, c)
+            a - DataFrame com as princiais informações
+            b - O melhor modelo já retreinado com toda a base de
+            dados (refit = True)
+            c - Os melhores parametros
+    --------------------------------------------------------------
+    '''  
+    
+    
+    np.random.seed(seed)
+
+    cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats)
+
+    clf =GridSearchCV(modelo, parameters,
+                              cv=cv, 
+                              verbose=1,
+                              scoring='roc_auc',
+                              return_train_score=True,
+                              refit=True) 
 
     clf.fit(x, y)
     resultados, melhor_modelo, melhores_hyperparamentros = obtem_os_resultados_SearchCV(clf)

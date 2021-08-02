@@ -99,3 +99,11 @@ def porcentagem_teste_treino_val(y, y_val, y_cv):
     print(f'Número total de entradas                         : {len(y)}')
     print(f'Número total de entradas para validacao          : {len(y_val)}')
     print(f'Número total de entradas para o Cross Validation : {len(y_cv)}')
+    
+def resultados_treinamento(resultados, modelo, hyperparametros, n = 5):
+    '''
+    Mostra os resltados do modelo treinado
+    '''
+    print(f'melhores hyperparametros : {hyperparametros}')
+    print(f'Melhor modelo            : {modelo}')
+    return resultados.head(n=n)
