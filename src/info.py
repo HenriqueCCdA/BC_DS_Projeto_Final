@@ -89,7 +89,7 @@ def proporcao_y(y):
     for l , v in zip(p.index, p.values):
         print(f"Campo {l} ->  {v*100:.2f}%")
         
-def porcentagem_teste_treino_val(y, y_val, y_cv):
+def numero_teste_treino_val(y, y_val, y_cv):
     '''
     ------------------------------------------------------------------------
     Mostra o numero de entradas em cada dataset
@@ -107,3 +107,5 @@ def resultados_treinamento(resultados, modelo, hyperparametros, n = 5):
     print(f'melhores hyperparametros : {hyperparametros}')
     print(f'Melhor modelo            : {modelo}')
     return resultados.head(n=n)
+
+

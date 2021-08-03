@@ -6,6 +6,8 @@ from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import roc_auc_score
 
 def retorna_x_y(dados):
     '''
@@ -275,3 +277,38 @@ def cv_val_split(dados, p_val=0.1):
     x_cv, x_val, y_cv, y_val = train_test_split(x, y, stratify=y             , test_size=p_val)
     
     return x_cv, x_val, y_cv, y_val
+
+def desempenho_dos_modelos(modelos, x, y):
+    '''
+    ---------------------------------------------------------------
+    Plota a matriz de confusao 
+    ---------------------------------------------------------------
+    @param modelos  - lista com os modelos
+    @param x        - x do modelo de ML
+    @param y        - y do modelo de ML
+    ---------------------------------------------------------------
+    @return retona um dataFrame com as informação do desempenho
+    ---------------------------------------------------------------
+    ''' 
+
+    tns, fps, fns, tps, aucs, names = [], [], [], [], [], []
+
+    for modelo in modelos:
+        name = type(modelo).__name__
+        (tn, fp), (fn, tp) = confusion_matrix(y, modelo.predict(x))
+        auc = roc_auc_score(y, modelo.predict_proba(x)[:, 1])
+        tns.append(tn)
+        fps.append(fp)
+        fns.append(fn)
+        tps.append(tp)
+        aucs.append(auc)
+        names.append(name)
+
+    modelos_desempenho = pd.DataFrame({'Name': names,
+                                        'tn': tns,
+                                        'fp': fps,
+                                        'fn': fns,
+                                        'tp': tps,
+                                        'AUC': aucs
+                                      }).sort_values('AUC', ascending=False, ignore_index=True)
+    return modelos_desempenho

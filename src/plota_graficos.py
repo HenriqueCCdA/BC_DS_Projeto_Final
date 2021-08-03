@@ -2,7 +2,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import plot_roc_curve
 
+
+
+#********************************************************************* 
 def plot_barras(titulo, x, y, xlim, n_colors=10):
     '''
     ---------------------------------------------------------------
@@ -47,7 +52,9 @@ def plot_barras(titulo, x, y, xlim, n_colors=10):
     ax.spines['left'].set_color('gray')
 
     plt.show()
+#*********************************************************************     
     
+#*********************************************************************     
 def plot_barras_grupos(dados, titulo):
     '''
     ---------------------------------------------------------------
@@ -93,7 +100,9 @@ def plot_barras_grupos(dados, titulo):
     ax.legend(fontsize=14, ncol=2)
 
     plt.show()
-    
+#********************************************************************* 
+
+#********************************************************************* 
 def plota_matriz_correlacao(dados, matriz = 'upper'):
     '''
     ----------------------------------------------------------------------------
@@ -140,7 +149,9 @@ def plota_matriz_correlacao(dados, matriz = 'upper'):
     colorbar.set_ticks(num)
     colorbar.set_ticklabels(num)
     plt.show()    
-    
+#********************************************************************* 
+
+#********************************************************************* 
 def plota_treino_teste_auc(titulo, teste_auc, treino_auc, rank, hp_melhor):
     '''
     ------------------------------------------------------------
@@ -191,5 +202,68 @@ def plota_treino_teste_auc(titulo, teste_auc, treino_auc, rank, hp_melhor):
     
     ax.vlines(x=melhor_pos, ymin=0, ymax=2, ls='--', color='black')
     ax.annotate(text = 'Melhor conjuto:' + str(hp_melhor), xy=(melhor_pos+0.1, 0.2), rotation=0, fontsize=12)
+        
     plt.show()
+#********************************************************************* 
     
+#*********************************************************************     
+def plota_matriz_de_confusao(modelos, x, y):
+    '''
+    ---------------------------------------------------------------
+    Plota a matriz de confusao 
+    ---------------------------------------------------------------
+    @param modelos  - lista com os modelos
+    @param x        - x do modelo de ML
+    @param y        - y do modelo de ML
+    ---------------------------------------------------------------
+    '''    
+    
+    fig, ax = plt.subplots(2, 3, figsize=(15, 10))
+
+    ax = ax.reshape(-1)
+
+    for i, modelo in enumerate(modelos):
+        ax[i].set_title(type(modelo).__name__, fontsize=16)
+        plot_confusion_matrix(modelo, x, y, ax=ax[i], normalize='all')
+#*********************************************************************    
+
+#*********************************************************************    
+def plota_curva_roc(modelos, titulo, x, y):
+    '''
+    ---------------------------------------------------------------
+    Plota a curva ROC 
+    ---------------------------------------------------------------
+    @param modelos  - lista com os modelos
+    @param titulo   - titulo do grafico
+    @param x        - x do modelo de ML
+    @param y        - y do modelo de ML
+    ---------------------------------------------------------------
+    '''     
+    
+    fig, ax = plt.subplots(figsize=(16,8))
+
+    fig.set_facecolor('white')
+    ax.set_facecolor('white')
+
+    ax.set_title(titulo, loc = 'left', fontsize=16, color='gray')
+
+    for i, modelo in enumerate(modelos):
+        plot_roc_curve(modelo , x, y, ax = ax) 
+    
+    ax.plot([0, 1], [0, 1], color = "red", ls ='--')
+
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+    ax.spines['bottom'].set_color('gray')
+    ax.spines['left'].set_color('gray')   
+
+    plt.xticks(fontsize= 14, color='gray')
+    plt.yticks(fontsize= 14, color='gray')
+
+    ax.set_xlabel(xlabel= 'Taxa de Falsos positivos'   , fontsize=14, color='gray')
+    ax.set_ylabel(ylabel= 'Taxa de Verdadeiro positivos', fontsize=14, color='gray')
+
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    plt.show()
+#********************************************************************* 
