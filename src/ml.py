@@ -8,8 +8,6 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import roc_auc_score
-from numpy.random import MT19937
-from numpy.random import RandomState, SeedSequence
 # meus
 try:
     from src.plota_graficos import plota_treino_teste_auc
@@ -167,12 +165,12 @@ def obtem_os_resultados_SearchCV(clf):
 
 def treina_modelo_randomized_search_cv(modelo,
                                        x,
-                                        y,
-                                        parameters,
-                                        n_splits = 5,
-                                        n_repeats = 5,
-                                        n_iter = 10,
-                                        seed = 14715):
+                                       y,
+                                       parameters,
+                                       n_splits = 5,
+                                       n_repeats = 5,
+                                       n_iter = 10,
+                                       rng = None):
 
     '''
     ------------------------------------------------------------
@@ -187,8 +185,7 @@ def treina_modelo_randomized_search_cv(modelo,
     @param n_repeats   - numero de repetições que n_div e feita pelo
                          RepeatedStratifiedKFold
     @param n_iter      - numero de iterações do RandomizedSearchCV
-    @param seed        - semente dos numeros aletorios usado no 
-                       np.random.seed
+    @param rng         - o gerador de numero aleatorio
     -------------------------------------------------------------
     @return retorna uma tupla (a, b, c)
             a - DataFrame com as princiais informações
@@ -198,8 +195,6 @@ def treina_modelo_randomized_search_cv(modelo,
     --------------------------------------------------------------
     '''     
     
-    rng = RandomState(MT19937(SeedSequence(seed)))
-
     cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats, random_state=rng)
 
     clf = RandomizedSearchCV(modelo, parameters,
@@ -223,7 +218,7 @@ def treina_modelo_grid_search_cv(modelo,
                                  n_splits = 5,
                                  n_repeats = 5,
                                  n_iter = 10,
-                                 seed = 14715):
+                                 rng = None):
 
     '''
     ------------------------------------------------------------
@@ -238,8 +233,7 @@ def treina_modelo_grid_search_cv(modelo,
     @param n_repeats   - numero de repetições que n_div e feita pelo
                          RepeatedStratifiedKFold
     @param n_iter      - numero de iterações do RandomizedSearchCV
-    @param seed        - semente dos numeros aletorios usado no 
-                       np.random.seed
+    @param rng         - o gerador de numero aleatorio
     -------------------------------------------------------------
     @return retorna uma tupla (a, b, c)
             a - DataFrame com as princiais informações
@@ -249,8 +243,6 @@ def treina_modelo_grid_search_cv(modelo,
     --------------------------------------------------------------
     '''  
     
-    rng = RandomState(MT19937(SeedSequence(seed)))
-
     cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats, random_state=rng)
 
     clf =GridSearchCV(modelo, parameters,
@@ -265,14 +257,14 @@ def treina_modelo_grid_search_cv(modelo,
 
     return resultados, melhor_modelo, melhores_hyperparamentros
 
-def cv_val_split(dados, p_val=0.1, seed = 14715):
+def cv_val_split(dados, p_val=0.1, rng = None):
     '''
     ----------------------------------------------------------------------------
     Divide os dados entre Cross Validation (treino+test) e validacao
     ----------------------------------------------------------------------------
     @param dados - dataFrame com os dados
     @param p_val - porcentagem dos dos que vão para validadação
-    @param seed  - semente do gerador de numero aleatorios
+    @param rng   - o gerador de numero aleatorio
     ----------------------------------------------------------------------------
     @return retorna a tupla (x_cv, x_val, y_cv, y_val)
             x_cv  - dados para o Cross Validation ( treino + teste)
@@ -281,8 +273,7 @@ def cv_val_split(dados, p_val=0.1, seed = 14715):
             y_val - dados para a validacao
     ----------------------------------------------------------------------------
     '''
-    rng = RandomState(MT19937(SeedSequence(seed)))
-    
+   
     dados = dados.sample(frac=1, random_state=rng).reset_index(drop=True)
     
     x, y = retorna_x_y(dados)
@@ -327,7 +318,7 @@ def desempenho_dos_modelos(modelos, x, y):
                                       }).sort_values('AUC', ascending=False, ignore_index=True)
     return modelos_desempenho
 
-def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, seed, titulo, n):
+def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, titulo, n, rng = None):
     '''
     ----------------------------------------------------------------------------
     Treina e mostra os resultados
@@ -340,8 +331,7 @@ def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, seed, titulo, 
     @param n_repeats   - numero de repetições que n_div e feita pelo
                          RepeatedStratifiedKFold
     @param n_iter      - numero de iterações do RandomizedSearchCV
-    @param seed        - semente dos numeros aletorios usado no 
-                       np.random.seed
+    @param rng         - o gerador de numero aleatorio
     @param titulo      - titulo do gradico
     @param n           - numero de linhas no DataFrame com os Res
     ------------------------------------------------------------------------------
@@ -360,7 +350,7 @@ def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, seed, titulo, 
                                           n_splits=n_splits,
                                           n_repeats=n_repeats,
                                           n_iter=n_iter,
-                                          seed=seed)
+                                          rng=rng)
 
     plota_treino_teste_auc(titulo, 
                          resultados['media_teste'],
