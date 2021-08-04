@@ -278,12 +278,14 @@ def cv_val_split(dados, p_val=0.1, seed = 14715):
             y_val - dados para a validacao
     ----------------------------------------------------------------------------
     '''
+    np.random.seed(seed)
+    
     dados = dados.sample(frac=1).reset_index(drop=True)
     
     x, y = retorna_x_y(dados)
 
-    x_cv, x_val, y_cv, y_val = train_test_split(x, y, stratify=y, random_state = seed
-                                                , test_size=p_val)
+    x_cv, x_val, y_cv, y_val = train_test_split(x, y, stratify=y, 
+                                                test_size=p_val)
     
     return x_cv, x_val, y_cv, y_val
 
