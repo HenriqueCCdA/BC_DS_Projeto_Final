@@ -8,6 +8,13 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import roc_auc_score
+# meus
+try:
+    from src.plota_graficos import plota_treino_teste_auc
+    from src.info import resultados_treinamento
+except:
+    from plota_graficos import plota_treino_teste_auc
+    from info import resultados_treinamento
 
 def retorna_x_y(dados):
     '''
@@ -255,13 +262,14 @@ def treina_modelo_grid_search_cv(modelo,
 
     return resultados, melhor_modelo, melhores_hyperparamentros
 
-def cv_val_split(dados, p_val=0.1):
+def cv_val_split(dados, p_val=0.1, seed = 14715):
     '''
     ----------------------------------------------------------------------------
     Divide os dados entre Cross Validation (treino+test) e validacao
     ----------------------------------------------------------------------------
     @param dados - dataFrame com os dados
     @param p_val - porcentagem dos dos que vão para validadação
+    @param seed  - semente do gerador de numero aleatorios
     ----------------------------------------------------------------------------
     @return retorna a tupla (x_cv, x_val, y_cv, y_val)
             x_cv  - dados para o Cross Validation ( treino + teste)
@@ -274,7 +282,8 @@ def cv_val_split(dados, p_val=0.1):
     
     x, y = retorna_x_y(dados)
 
-    x_cv, x_val, y_cv, y_val = train_test_split(x, y, stratify=y             , test_size=p_val)
+    x_cv, x_val, y_cv, y_val = train_test_split(x, y, stratify=y, random_state = seed
+                                                , test_size=p_val)
     
     return x_cv, x_val, y_cv, y_val
 
@@ -312,3 +321,48 @@ def desempenho_dos_modelos(modelos, x, y):
                                         'AUC': aucs
                                       }).sort_values('AUC', ascending=False, ignore_index=True)
     return modelos_desempenho
+
+def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, seed, titulo, n):
+    '''
+    ----------------------------------------------------------------------------
+    Treina e mostra os resultados
+    ----------------------------------------------------------------------------
+    @param modelo      - modelo istânciado não treinado
+    @param x           - DataFrame com os dados para o cv 
+    @param y           - DataFrame com os dados para o cv
+    @param paramentros - Dicionario com os parametros a serem testados
+    @param n_splits    - numero de divisões da base de dados do cv
+    @param n_repeats   - numero de repetições que n_div e feita pelo
+                         RepeatedStratifiedKFold
+    @param n_iter      - numero de iterações do RandomizedSearchCV
+    @param seed        - semente dos numeros aletorios usado no 
+                       np.random.seed
+    @param titulo      - titulo do gradico
+    @param n           - numero de linhas no DataFrame com os Res
+    ------------------------------------------------------------------------------
+    @return retorna uma tupla (a, b)
+            a - O melhor modelo já retreinado com toda a base de
+                dados (refit = True)
+            b - DataFrame com os resultados
+    ----------------------------------------------------------------------------
+    '''
+
+    resultados, melhor_modelo, hyperparametros  =\
+        treina_modelo_randomized_search_cv(modelo,
+                                          x,
+                                          y,
+                                          parameters,
+                                          n_splits=n_splits,
+                                          n_repeats=n_repeats,
+                                          n_iter=n_iter,
+                                          seed=seed)
+
+    plota_treino_teste_auc(titulo, 
+                         resultados['media_teste'],
+                         resultados['media_treino'],
+                         resultados['rank_test_score'],
+                         hyperparametros)
+
+    pd = resultados_treinamento(resultados, melhor_modelo, hyperparametros, n = n)
+
+    return melhor_modelo, pd
