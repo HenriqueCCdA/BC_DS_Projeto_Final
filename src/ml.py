@@ -8,6 +8,8 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import roc_auc_score
+from numpy.random import MT19937
+from numpy.random import RandomState, SeedSequence
 # meus
 try:
     from src.plota_graficos import plota_treino_teste_auc
@@ -73,9 +75,11 @@ def roda_modelo_direto(modelo, x, y, seed = 42258):
     ---------------------------------------------------------    
     '''
     
-    np.random.seed(seed)
+    rng = RandomState(MT19937(SeedSequence(seed)))
     
-    x_treino, x_teste, y_treino, y_teste = train_test_split(x, y, stratify=y, test_size=0.10)
+    x_treino, x_teste, y_treino, y_teste = train_test_split(x, y, stratify=y,
+                                                            random_state=rng,
+                                                            test_size=0.10)
 
     print(f'Tamanho teste : {len(y_teste) :4d}')
     print(f'Tamanho treino: {len(y_treino):4d}')
@@ -110,9 +114,9 @@ def roda_modelo_cv(modelo, x, y, n_div = 5,
     @return retorna uma tupla (auc_medio_teste, auc_medio_treino)
     --------------------------------------------------------------
     '''  
-    np.random.seed(seed)
+    rng = RandomState(MT19937(SeedSequence(seed)))
   
-    cv = RepeatedStratifiedKFold(n_splits = n_div, n_repeats = n_rep)
+    cv = RepeatedStratifiedKFold(n_splits = n_div, n_repeats = n_rep, random_state=rng)
       
     resultados = cross_validate(modelo, x, y, cv= cv, 
                                 scoring='roc_auc',
@@ -192,12 +196,11 @@ def treina_modelo_randomized_search_cv(modelo,
             dados (refit = True)
             c - Os melhores parametros
     --------------------------------------------------------------
-    '''  
+    '''     
     
-    
-    np.random.seed(seed)
+    rng = RandomState(MT19937(SeedSequence(seed)))
 
-    cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats)
+    cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats, random_state=rng)
 
     clf = RandomizedSearchCV(modelo, parameters,
                              cv=cv, 
@@ -205,7 +208,8 @@ def treina_modelo_randomized_search_cv(modelo,
                              scoring='roc_auc',
                              return_train_score=True,
                              n_iter=n_iter,
-                             refit=True) 
+                             refit=True,
+                             random_state=rng) 
 
     clf.fit(x, y)
     resultados, melhor_modelo, melhores_hyperparamentros = obtem_os_resultados_SearchCV(clf)
@@ -245,10 +249,9 @@ def treina_modelo_grid_search_cv(modelo,
     --------------------------------------------------------------
     '''  
     
-    
-    np.random.seed(seed)
+    rng = RandomState(MT19937(SeedSequence(seed)))
 
-    cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats)
+    cv = RepeatedStratifiedKFold(n_splits = n_splits, n_repeats = n_repeats, random_state=rng)
 
     clf =GridSearchCV(modelo, parameters,
                               cv=cv, 
@@ -278,14 +281,14 @@ def cv_val_split(dados, p_val=0.1, seed = 14715):
             y_val - dados para a validacao
     ----------------------------------------------------------------------------
     '''
-    np.random.seed(seed)
+    rng = RandomState(MT19937(SeedSequence(seed)))
     
-    dados = dados.sample(frac=1).reset_index(drop=True)
+    dados = dados.sample(frac=1, random_state=rng).reset_index(drop=True)
     
     x, y = retorna_x_y(dados)
 
     x_cv, x_val, y_cv, y_val = train_test_split(x, y, stratify=y, 
-                                                test_size=p_val)
+                                                test_size=p_val, random_state=rng)
     
     return x_cv, x_val, y_cv, y_val
 
