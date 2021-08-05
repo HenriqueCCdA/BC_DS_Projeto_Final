@@ -5,8 +5,6 @@ import numpy as np
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import plot_roc_curve
 
-
-
 #********************************************************************* 
 def plot_barras(titulo, x, y, xlim, n_colors=10):
     '''
@@ -140,6 +138,7 @@ def plota_matriz_correlacao(dados, matriz = 'upper'):
                      cmap=map,
                      xticklabels=[],
                      yticklabels=[],
+                     linewidths=0.0,
                      ax=ax)
     
     colorbar = ax.collections[0].colorbar

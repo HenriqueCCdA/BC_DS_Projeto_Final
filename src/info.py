@@ -33,7 +33,7 @@ def variaveis_explicativas(dados, ncols=2):
         for j in range(0, ncols):
             kk = i+j
             if ( kk < n):
-                print(f'col[{kk:3d}] -> {dados.columns[kk]:30s}', end=' ')
+                print(f'col[{kk:3d}] -> {dados.columns[kk]:35s}', end=' ')
             else:
                 fexit = True
                 break
