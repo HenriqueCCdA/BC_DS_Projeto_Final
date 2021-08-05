@@ -217,7 +217,6 @@ def treina_modelo_grid_search_cv(modelo,
                                  parameters,
                                  n_splits = 5,
                                  n_repeats = 5,
-                                 n_iter = 10,
                                  rng = None):
 
     '''
@@ -232,7 +231,6 @@ def treina_modelo_grid_search_cv(modelo,
     @param n_splits    - numero de divisões da base de dados do cv
     @param n_repeats   - numero de repetições que n_div e feita pelo
                          RepeatedStratifiedKFold
-    @param n_iter      - numero de iterações do RandomizedSearchCV
     @param rng         - o gerador de numero aleatorio
     -------------------------------------------------------------
     @return retorna uma tupla (a, b, c)
