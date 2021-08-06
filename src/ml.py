@@ -316,7 +316,8 @@ def desempenho_dos_modelos(modelos, x, y):
                                       }).sort_values('AUC', ascending=False, ignore_index=True)
     return modelos_desempenho
 
-def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, titulo, n, rng = None):
+def treina(modelo, x, y, parameters, n_splits=5, n_repeats=10, n_iter=10, titulo=None,
+                                            n=10, rng = None, plota=True):
     '''
     ----------------------------------------------------------------------------
     Treina e mostra os resultados
@@ -332,6 +333,8 @@ def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, titulo, n, rng
     @param rng         - o gerador de numero aleatorio
     @param titulo      - titulo do gradico
     @param n           - numero de linhas no DataFrame com os Res
+    @param rng         - gerador de numero aleatorio
+    @param plota       - plota ao grafico
     ------------------------------------------------------------------------------
     @return retorna uma tupla (a, b)
             a - O melhor modelo já retreinado com toda a base de
@@ -349,8 +352,9 @@ def treina(modelo, x, y, parameters, n_splits, n_repeats, n_iter, titulo, n, rng
                                           n_repeats=n_repeats,
                                           n_iter=n_iter,
                                           rng=rng)
-
-    plota_treino_teste_auc(titulo, 
+    
+    if(plota):
+        plota_treino_teste_auc(titulo, 
                          resultados['media_teste'],
                          resultados['media_treino'],
                          resultados['rank_test_score'],
