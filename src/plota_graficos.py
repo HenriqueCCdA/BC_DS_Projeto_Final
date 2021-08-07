@@ -151,16 +151,20 @@ def plota_matriz_correlacao(dados, matriz = 'upper'):
 #********************************************************************* 
 
 #********************************************************************* 
-def plota_treino_teste_auc(titulo, teste_auc, treino_auc, rank, hp_melhor):
+def plota_treino_teste_auc(nome_modelo, teste_auc, treino_auc, rank, hp_melhor,
+                           pasta_saida_fig='./',
+                           f_save_fig=False):
     '''
     ------------------------------------------------------------
     Plota a curva AUC para o teste de hyperparamentros
     ------------------------------------------------------------    
-    @param titulo     - Titulo do grafico
+    @param nome_modelo- Nome do modelo no titulo
     @param teste_auc  - Valores AUC dos Teste
     @param treino_auc - Valores AUC dos Treino
     @param rank       - colocação dos modelos
     @param hp_melhor  - hyperparametro que gera o melhor modelo
+    @param f_save_fig - salva a figura em um arquivo
+    @param pasta_saida_fig - diretorio onde as figuras serao salvas
     -------------------------------------------------------------
     ''' 
     
@@ -174,7 +178,7 @@ def plota_treino_teste_auc(titulo, teste_auc, treino_auc, rank, hp_melhor):
             break
     
     fig.text(x = 0.08, y = 0.95,
-         s = titulo,
+         s = 'Seleção de Hyperparametros - ' + nome_modelo,
          fontsize=24, color = 'gray') 
     
     x = range(0, len(teste_auc))
@@ -202,7 +206,12 @@ def plota_treino_teste_auc(titulo, teste_auc, treino_auc, rank, hp_melhor):
     ax.vlines(x=melhor_pos, ymin=0, ymax=2, ls='--', color='black')
     ax.annotate(text = 'Melhor conjuto:' + str(hp_melhor), xy=(melhor_pos+0.1, 0.2), rotation=0, fontsize=12)
         
+    if (f_save_fig):
+        plt.savefig( pasta_saida_fig + nome_modelo + "_treino_teste_auc.png")        
+        
     plt.show()
+       
+
 #********************************************************************* 
     
 #*********************************************************************     

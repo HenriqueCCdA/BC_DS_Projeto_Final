@@ -208,8 +208,12 @@ def treina_modelo_randomized_search_cv(modelo,
 
     clf.fit(x, y)
     resultados, melhor_modelo, melhores_hyperparamentros = obtem_os_resultados_SearchCV(clf)
+    
+    media, std = obtem_media_e_std_do_melhor_teste_cv(resultados)
+    
+    melhor_metrica = {'media': media, 'std': std}
 
-    return resultados, melhor_modelo, melhores_hyperparamentros
+    return resultados, melhor_modelo, melhores_hyperparamentros, melhor_metrica
 
 def treina_modelo_grid_search_cv(modelo,
                                  x,
@@ -316,34 +320,42 @@ def desempenho_dos_modelos(modelos, x, y):
                                       }).sort_values('AUC', ascending=False, ignore_index=True)
     return modelos_desempenho
 
-def treina(modelo, x, y, parameters, n_splits=5, n_repeats=10, n_iter=10, titulo=None,
-                                            n=10, rng = None, plota=True):
+def treina(modelo, x, y, parameters,
+           n_splits=5, 
+           n_repeats=10, 
+           n_iter=10, 
+           n=10, 
+           rng = None, 
+           plota=True,
+           pasta_saida_fig='./',
+           f_save_fig=False):
     '''
     ----------------------------------------------------------------------------
     Treina e mostra os resultados
     ----------------------------------------------------------------------------
-    @param modelo      - modelo istânciado não treinado
-    @param x           - DataFrame com os dados para o cv 
-    @param y           - DataFrame com os dados para o cv
-    @param paramentros - Dicionario com os parametros a serem testados
-    @param n_splits    - numero de divisões da base de dados do cv
-    @param n_repeats   - numero de repetições que n_div e feita pelo
-                         RepeatedStratifiedKFold
-    @param n_iter      - numero de iterações do RandomizedSearchCV
-    @param rng         - o gerador de numero aleatorio
-    @param titulo      - titulo do gradico
-    @param n           - numero de linhas no DataFrame com os Res
-    @param rng         - gerador de numero aleatorio
-    @param plota       - plota ao grafico
+    @param modelo          - modelo istânciado não treinado
+    @param x               - DataFrame com os dados para o cv 
+    @param y               - DataFrame com os dados para o cv
+    @param paramentros     - Dicionario com os parametros a serem testados
+    @param n_splits        - numero de divisões da base de dados do cv
+    @param n_repeats       - numero de repetições que n_div e feita pelo
+                             RepeatedStratifiedKFold
+    @param n_iter          - numero de iterações do RandomizedSearchCV
+    @param n               - numero de linhas no DataFrame com os Res
+    @param rng             - o gerador de numero aleatorio
+    @param plota           - plota o grafico
+    @param f_save_fig      - salva a figura em um arquivo
+    @param pasta_saida_fig - diretorio onde as figuras serao salvas
     ------------------------------------------------------------------------------
-    @return retorna uma tupla (a, b)
+    @return retorna uma tupla (a, b, c)
             a - O melhor modelo já retreinado com toda a base de
                 dados (refit = True)
             b - DataFrame com os resultados
+            c - metricas do melhor modelo
     ----------------------------------------------------------------------------
     '''
 
-    resultados, melhor_modelo, hyperparametros  =\
+    resultados, melhor_modelo, hyperparametros, melhor_metrica  =\
         treina_modelo_randomized_search_cv(modelo,
                                           x,
                                           y,
@@ -354,12 +366,44 @@ def treina(modelo, x, y, parameters, n_splits=5, n_repeats=10, n_iter=10, titulo
                                           rng=rng)
     
     if(plota):
-        plota_treino_teste_auc(titulo, 
+        plota_treino_teste_auc(obtem_nome_modelo(modelo), 
                          resultados['media_teste'],
                          resultados['media_treino'],
                          resultados['rank_test_score'],
-                         hyperparametros)
+                         hyperparametros,
+                         pasta_saida_fig=pasta_saida_fig,
+                         f_save_fig=True)
 
     pd = resultados_treinamento(resultados, melhor_modelo, hyperparametros, n = n)
 
-    return melhor_modelo, pd
+    return melhor_modelo, pd, melhor_metrica
+
+def obtem_media_e_std_do_melhor_teste_cv(res):
+    '''
+    -----------------------------------------------------------------
+    Obtem informacoes do melhor modelo do Cross Validation
+    -----------------------------------------------------------------
+    @param res - DataFrame como os resultados do Cross Validation
+    -----------------------------------------------------------------
+    @return retorna uma tupla (media, std) do melhor modelo
+    '''
+    
+    lin = res.query('rank_test_score == 1').index
+    res.loc[lin, ['media_teste','std_teste']]
+
+    media, std = res.loc[lin, ['media_teste','std_teste']].values[0]
+    
+    return media, std
+
+def obtem_nome_modelo(modelo):
+    '''
+    --------------------------------------------------------------------
+    Obtem o nome do modelo de ML
+    --------------------------------------------------------------------
+    @param modelo - modelo de ML
+    --------------------------------------------------------------------
+    @return retorna o nome do modelo
+    --------------------------------------------------------------------
+    '''
+    
+    return type(modelo).__name__

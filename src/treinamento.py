@@ -22,13 +22,15 @@ import scipy   as sc
 import matplotlib as mpl
 
 try:
-    from src.ml import treina_modelo_grid_search_cv, treina, cv_val_split, desempenho_dos_modelos 
+    from src.ml import treina_modelo_grid_search_cv, treina, cv_val_split, desempenho_dos_modelos, obtem_nome_modelo 
     from src.info import proporcao_y, numero_teste_treino_val, dimensao_dados, variaveis_explicativas
+    import src.hyperparametros as hp
 except:
-    from ml import treina_modelo_grid_search_cv, treina, cv_val_split, desempenho_dos_modelos 
+    from ml import treina_modelo_grid_search_cv, treina, cv_val_split, desempenho_dos_modelos, obtem_nome_modelo 
     from info import proporcao_y, numero_teste_treino_val, dimensao_dados, variaveis_explicativas
+    import hyperparametros as hp
     
-def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=10, verbose=0):  
+def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=10, verbose=0, seed = 1471523):  
     
     if (verbose):
         print(f'Versoes das biblioteca')
@@ -38,9 +40,9 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
         print(f'numpy      : {np.__version__}')
         print(f'matplotlib : {mpl.__version__}')
    
-    seed     = 1471523
-
     dados = pd.read_csv(path)
+    
+    melhores_metriacas_cv_por_modelo={}
     
     dimensao_dados(dados)
     if (verbose):
@@ -61,7 +63,7 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
     print('Treinamento DummyClassifier')
     rng = RandomState(MT19937(SeedSequence(seed)))
     modelo = DummyClassifier(random_state=rng)
-    parameters = {'strategy' : ['stratified', 'most_frequent', 'prior', 'uniform']}
+    parameters = hp.parameters_dummy
 
     _, melhor_modelo_dummy, _ = treina_modelo_grid_search_cv(modelo,                                                                                            
                                                              x_cv, 
@@ -73,9 +75,9 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
     # Regressão logistica
     print('Treinamento LogisticRegression')
     rng = RandomState(MT19937(SeedSequence(seed)))
-    parameters = {'C': uniform(loc=0, scale=4)}
+    parameters = hp.parameters_logistic_regression
     modelo = LogisticRegression(max_iter=1000, tol=1e-6)
-    melhor_modelo_lr, res = treina(modelo = modelo,
+    melhor_modelo_lr, res, melhor_metrica = treina(modelo = modelo,
                         x = x_cv, 
                         y = y_cv, 
                         parameters = parameters, 
@@ -86,16 +88,14 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
                         n = 10,
                         rng=rng)
     
+    melhores_metriacas_cv_por_modelo[obtem_nome_modelo(modelo)] =  melhor_metrica
+    
     # Arvore de decisão
     print('Treinamento DecisionTreeClassifier')
     rng = RandomState(MT19937(SeedSequence(seed)))
-    parameters = {'max_depth'       : np.arange(1, 21),
-              'criterion'       : ['gini', 'entropy'],
-              'min_samples_leaf': np.arange(1, 6),
-              'max_leaf_nodes'  : np.arange(2, 6)
-             }
+    parameters = hp.parameters_decision_tree
     modelo = DecisionTreeClassifier()
-    melhor_modelo_arvore, res = treina(modelo = modelo,
+    melhor_modelo_arvore, res, melhor_metrica = treina(modelo = modelo,
                             x = x_cv, 
                             y = y_cv, 
                             parameters = parameters, 
@@ -105,17 +105,14 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
                             plota = False,
                             n = 10,
                             rng=rng)
+    melhores_metriacas_cv_por_modelo[obtem_nome_modelo(modelo)] =  melhor_metrica
+    
     # RandomForestClassifier
     print('Treinamento RandomForestClassifier')
     rng = RandomState(MT19937(SeedSequence(seed)))
-    parameters = {'n_estimators'    : [10, 50, 100, 150, 200, 250, 300],
-                  'max_depth'       : np.arange(1, 21),
-                  'criterion'       : ['gini', 'entropy'],
-                  'min_samples_leaf': np.arange(1, 6),
-                  'max_leaf_nodes'  : np.arange(2, 6)
-                 }
+    parameters = hp.parameters_random_forest
     modelo = RandomForestClassifier(random_state=rng)
-    melhor_modelo_forest, res = treina(modelo = modelo,
+    melhor_modelo_forest, res, melhor_metrica = treina(modelo = modelo,
                               x = x_cv, 
                               y = y_cv, 
                               parameters = parameters, 
@@ -125,17 +122,14 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
                               plota = False,
                               n = 10,
                               rng=rng)
+    melhores_metriacas_cv_por_modelo[obtem_nome_modelo(modelo)] =  melhor_metrica
+    
     # SVC
     print('Treinamento SVC')
     rng = RandomState(MT19937(SeedSequence(seed)))
-    parameters = {'kernel'          : ['linear', 'poly', 'rbf', 'sigmoid'],
-              'C'               : uniform(loc=0, scale=2),
-              'gamma'           : ['scale', 'auto'],
-              'shrinking'       : [True, False]
-             }
-
+    parameters = hp.parameters_svc
     modelo = SVC(probability=True)
-    melhor_modelo_svc, res = treina(modelo = modelo,
+    melhor_modelo_svc, res, melhor_metrica = treina(modelo = modelo,
                               x = x_cv, 
                               y = y_cv, 
                               parameters = parameters, 
@@ -145,19 +139,15 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
                               plota = False,
                               n = 10,
                               rng=rng)
+    melhores_metriacas_cv_por_modelo[obtem_nome_modelo(modelo)] =  melhor_metrica
     
     # KNeighbors
     print('Treinamento KNeighbors')
     rng = RandomState(MT19937(SeedSequence(seed)))
-    parameters = {'n_neighbors'     : np.arange(1, 11),
-              'p'               : [1, 2],
-              'weights'         : ['uniform', 'distance'],
-              'algorithm'       : ['auto', 'ball_tree', 'kd_tree', 'brute']
-             }
-
+    parameters = hp.parameters_KNeighbors
     modelo = KNeighborsClassifier()
 
-    melhor_modelo_kn, res = treina(modelo = modelo,
+    melhor_modelo_kn, res, melhor_metrica = treina(modelo = modelo,
                                   x = x_cv, 
                                   y = y_cv, 
                                   parameters = parameters, 
@@ -167,6 +157,7 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
                                   plota = False,
                                   n = 10,
                                   rng=rng)
+    melhores_metriacas_cv_por_modelo[obtem_nome_modelo(modelo)] =  melhor_metrica
     
     modelos = [melhor_modelo_dummy, 
                melhor_modelo_lr, 
@@ -175,11 +166,15 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
                melhor_modelo_svc,
                melhor_modelo_kn] 
     
-    df = desempenho_dos_modelos(modelos, x_val, y_val)
+    df_val = desempenho_dos_modelos(modelos, x_val, y_val)
+    df_cv  = pd.DataFrame(melhores_metriacas_cv_por_modelo).T.sort_values('media', ascending=False)
     if (verbose):
-        print('Resultados:')
-        print(df)  
-    return df
+        print('Resultados no DataSet de validacao:')
+        print(df_val)
+        print('Resultados Cross Validation:')
+        print(df_cv)          
+        
+    return df_val, df_cv
     
 import sys
 def main(argv):        

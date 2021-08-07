@@ -107,5 +107,3 @@ def resultados_treinamento(resultados, modelo, hyperparametros, n = 5):
     print(f'melhores hyperparametros : {hyperparametros}')
     print(f'Melhor modelo            : {modelo}')
     return resultados.head(n=n)
-
-
