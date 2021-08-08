@@ -55,16 +55,16 @@ Foram feitas 4 seleções de variaveis explicativas, elas foram:
 
 * Seleção através da matriz de correlação. O limite de correção foi 0.9. Após o procedimentos chegou-se a **41** variaveis explicativas. Chamaremos o conjuto de dados de **df_coor_41**.
   * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/tree/main/Notebooks/Exploratorios). 
-  * [Base](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte.csv) e [variaveis selecionas](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte_colunas.csv). 
+  * [Base](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte.csv) e [variaveis selecionas](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte_colunas.csv). 
 
 * Seleção através da matriz de correlação e da tecinca recursive feature elimination (RFE).  O limete de correção foi novamente 0.9 e o modelo usado no **RFE** foi a **LogisticRegression**. Um consjutp de **20** e **30** variaveis foram obtidos. Chamaremos os conjuto sde dados de **df_RFE_20** e **df_RFE_30**
-  * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/10acc58f00f060385488c782c9ae2d2e6d404c08/Notebooks/Selecao_variaveis/selecao_variaveis_sklearn.ipynb). 
-  * [Base 20](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_rfe20.csv), [base 30](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_rfe30.csv), [variaveis selecionas da base 20](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_rfe20_colunas.csv) e
-  [variaveis selecionas da base 30](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_rfe30_colunas.csv). 
+  * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis_sklearn.ipynb). 
+  * [Base 20](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_rfe20.csv), [base 30](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_rfe30.csv), [variaveis selecionas da base 20](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Tratados/dados_rfe20_colunas.csv) e
+  [variaveis selecionas da base 30](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_rfe30_colunas.csv). 
 
 * Sekelçai atravez da lib [featurewiz](https://github.com/AutoViML/featurewiz). Após o procedimentos chegou-se a **25** variaveis explicativas. Chamaremos o conjuto de dados de **df_featurewiz_25**
-  * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_featurewiz.csv). 
-  * [Base](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte.csv) e [variaveis selecionas](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_featurewiz_colunas.csv).
+  * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_featurewiz.csv). 
+  * [Base](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte.csv) e [variaveis selecionas](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_featurewiz_colunas.csv).
 
 ---
 ## 5) Modelos de machine learning (ML)
@@ -82,14 +82,14 @@ Para a escolha do melhor modelo foi feita uma busca de hyperparametros. Estas bu
 
 Os todos os **conjuto de dados (dataset)** foram dividos em um dataset para **Validação cruzada (Cross Validation)** e um de **validação**. A difisão ficou 351 para **Validação cruzada** e 36 para a **validadção**. A escolha do metodo se seu olhado tanto o desempenho do modelo do conjuto de dadaos de **validação** quanto nas metricas medias de testes e desvio padrão do teste da **Validação cruzada**.
 
-Iniciamentel foi utilização **df_coor_41** para uma analise mais detalhada, o que pode se encontrado [Neste notebbok](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treinamentos_dados1.ipynb). Neste notebook chega-se a conlusão que o melhor modelo é **Random Forest Tree** com **ROC_AUC** de **0.78** no dataset de **validação** e media de **0.81** na **validação cruzada**.
+Iniciamentel foi utilização **df_coor_41** para uma analise mais detalhada, o que pode se encontrado [Neste notebbok](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treinamentos_dados1.ipynb). Neste notebook chega-se a conlusão que o melhor modelo é **Random Forest Tree** com **ROC_AUC** de **0.78** no dataset de **validação** e media de **0.81** na **validação cruzada**.
 
-Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outra de 3 bases restantes. Nele novamente concluimos que **Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25** que obteve **0.835913** no dataset de **validação** e **0.817647** não meida dos teste na **validação cruzada**
+Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outra de 3 bases restantes. Nele novamente concluimos que **Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25** que obteve **0.835913** no dataset de **validação** e **0.817647** não meida dos teste na **validação cruzada**
 
 ---
 # 6) Modelo final 
 
-O modelo final excolhifo foi **Random Forest Tree** com o conjuto de variveis explicativas do **df_featurewiz_25** ([lista das variaveis](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f0ee0858b6b2077764d333e96828aa12a627ceb/Dados/Tratados/dados_featurewiz_colunas.csv)). O modelo utilizando todas as 351 amostras e foi treinado [neste notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Notebooks/ML/Treinamento_modelo_final.ipynb). O modelo treinando foi salvo com a lib **joblib** no arquivo [modelo_final.sav](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Modelo_ML/modelo_final.sav). 
+O modelo final excolhifo foi **Random Forest Tree** com o conjuto de variveis explicativas do **df_featurewiz_25** ([lista das variaveis](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_featurewiz_colunas.csv)). O modelo utilizando todas as 351 amostras e foi treinado [neste notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Notebooks/ML/Treinamento_modelo_final.ipynb). O modelo treinando foi salvo com a lib **joblib** no arquivo [modelo_final.sav](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Modelo_ML/modelo_final.sav). 
 
 
 ---
@@ -124,13 +124,13 @@ Finalmente agora temos um modelo de ML capaz de predizer com um certo grau de ac
 ---
 * Ordem indica de leitura dos notebooks:
 
-1. [Limpeza e Exploração dos dados](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
-2. [Seleção de variaveis - Método 1](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
-3. [Seleção de variaveis - Método 2](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Selecao_variaveis/selecao_variaveis_sklearn.ipynb)
-4. [Seleção de variaveis - Método 3](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Selecao_variaveis/selecao_variaveis_featurewiz.ipynb)
-5. [Primeiro Treinamento na base df_coor_41](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/ML/treinamentos_dados1.ipynb)
-6. [Treinamento com a 4 bases](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/ML/treina_diferentes_var_explicativas.ipynb)
-7. [Treinamento do modelo final](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Notebooks/ML/Treinamento_modelo_final.ipynb)
+1. [Limpeza e Exploração dos dados](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
+2. [Seleção de variaveis - Método 1](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
+3. [Seleção de variaveis - Método 2](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis_sklearn.ipynb)
+4. [Seleção de variaveis - Método 3](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis_featurewiz.ipynb)
+5. [Primeiro Treinamento na base df_coor_41](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treinamentos_dados1.ipynb)
+6. [Treinamento com a 4 bases](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treina_diferentes_var_explicativas.ipynb)
+7. [Treinamento do modelo final](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/Treinamento_modelo_final.ipynb)
 
 ---
 * Libs utilizadas:
