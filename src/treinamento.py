@@ -21,6 +21,8 @@ import sklearn as sk
 import scipy   as sc
 import matplotlib as mpl
 
+from typing import Tuple
+
 try:
     from src.ml import treina_modelo_grid_search_cv, treina, cv_val_split, desempenho_dos_modelos, obtem_nome_modelo 
     from src.info import proporcao_y, numero_teste_treino_val, dimensao_dados, variaveis_explicativas
@@ -30,7 +32,29 @@ except:
     from info import proporcao_y, numero_teste_treino_val, dimensao_dados, variaveis_explicativas
     import hyperparametros as hp
     
-def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=10, verbose=0, seed = 1471523):  
+def treinamentos(path: str='dados_featurewiz.csv', 
+                 n_iter: int=10, 
+                 n_splits:int =5, 
+                 n_repeats:int =10, 
+                 verbose:int =0, 
+                 seed:int = 1471523)->Tuple[pd.DataFrame, pd.DataFrame]:  
+    '''
+    ------------------------------------------------------------------------
+    Treina os 6 modelos
+    ------------------------------------------------------------------------
+    @param path - Cominho completa da base de dados
+    @param n_splits        - numero de divisões da base de dados do cv
+    @param n_repeats       - numero de repetições que n_div e feita pelo
+                             RepeatedStratifiedKFold
+    @param n_iter          - numero de iterações do RandomizedSearchCV
+    @verbose               - Define a grau de verbosida da funcoes
+    @param seed            - Semente do gerado de numero aleatorios
+    -------------------------------------------------------------------------
+    @return Retorna a Tupla (a, b)
+        a - O DataFrame com os resultados do dataset de validacao
+        b - O DataFrame com os resultados do Cross Validation
+    -------------------------------------------------------------------------
+    '''    
     
     if (verbose):
         print(f'Versoes das biblioteca')
@@ -177,11 +201,15 @@ def treinamentos(path='dados_featurewiz.csv', n_iter=10, n_splits=5, n_repeats=1
     return df_val, df_cv
     
 import sys
+
 def main(argv):        
    
-    path, n_iter, n_splits, n_repeats = argv[1], int(argv[2]), int(argv[3]), int(argv[4])
-    
-    treinamentos(path=path, n_iter=n_iter, n_splits=n_splits, n_repeats=n_repeats)
+    if(len(argv) == 1):
+        print('Numero de argumentos insuficiente:')
+        print('Ex de uso: returnamento.py path n_iter, n_splits, n_repeats')
+    else:
+        path, n_iter, n_splits, n_repeats = argv[1], int(argv[2]), int(argv[3]), int(argv[4])
+        treinamentos(path=path, n_iter=n_iter, n_splits=n_splits, n_repeats=n_repeats)
     
     
 if __name__ == '__main__':

@@ -8,6 +8,9 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import roc_auc_score
+
+from typing import Tuple, Dict
+from sklearn.base import BaseEstimator
 # meus
 try:
     from src.plota_graficos import plota_treino_teste_auc
@@ -16,7 +19,7 @@ except:
     from plota_graficos import plota_treino_teste_auc
     from info import resultados_treinamento
 
-def retorna_x_y(dados):
+def retorna_x_y(dados: pd.DataFrame)-> Tuple[pd.DataFrame, pd.Series]:
     '''
     ---------------------------------------------------------
     Retorna o DataFrame divido entre x e y
@@ -30,7 +33,7 @@ def retorna_x_y(dados):
     '''
     return dados.iloc[:,:-1], dados.iloc[:,-1]
 
-def intervalo_de_confianca(media, std):
+def intervalo_de_confianca(media: float, std: float)->Tuple[float, float]:
     '''
     ---------------------------------------------------------
     Calcula o intervalo de confiança para uma dada media e
@@ -44,7 +47,7 @@ def intervalo_de_confianca(media, std):
     '''
     return media-2*std, media + 2*std
 
-def logistic_regression_sumary(modelo):
+def logistic_regression_sumary(modelo: BaseEstimator):
     '''
     ---------------------------------------------------------
     Mostra os parametros da regressão logistica apos o treino
@@ -61,7 +64,8 @@ def logistic_regression_sumary(modelo):
     print('Numero de iteracoes:')
     print(modelo.n_iter_)
 
-def roda_modelo_direto(modelo, x, y, seed = 42258):
+def roda_modelo_direto(modelo: BaseEstimator, x: pd.DataFrame,
+                       y: pd.Series, seed: int = 42258):
     '''
     ---------------------------------------------------------
     Roda um modelo ML diretamente. 
@@ -163,13 +167,13 @@ def obtem_os_resultados_SearchCV(clf):
     
     return pd.DataFrame(aux), clf.best_estimator_, clf.best_params_
 
-def treina_modelo_randomized_search_cv(modelo,
-                                       x,
-                                       y,
-                                       parameters,
-                                       n_splits = 5,
-                                       n_repeats = 5,
-                                       n_iter = 10,
+def treina_modelo_randomized_search_cv(modelo: BaseEstimator,
+                                       x: pd.DataFrame,
+                                       y: pd.Series,
+                                       parameters: Dict,
+                                       n_splits: int = 5,
+                                       n_repeats: int = 5,
+                                       n_iter: int = 10,
                                        rng = None):
 
     '''
@@ -215,13 +219,13 @@ def treina_modelo_randomized_search_cv(modelo,
 
     return resultados, melhor_modelo, melhores_hyperparamentros, melhor_metrica
 
-def treina_modelo_grid_search_cv(modelo,
-                                 x,
-                                 y,
-                                 parameters,
-                                 n_splits = 5,
-                                 n_repeats = 5,
-                                 rng = None):
+def treina_modelo_grid_search_cv(modelo: BaseEstimator,
+                                 x: pd.DataFrame,
+                                 y: pd.Series,
+                                 parameters: Dict,
+                                 n_splits: int = 5,
+                                 n_repeats: int = 5,
+                                 rng = None)->Tuple[pd.DataFrame, BaseEstimator, Dict]:
 
     '''
     ------------------------------------------------------------
@@ -259,7 +263,9 @@ def treina_modelo_grid_search_cv(modelo,
 
     return resultados, melhor_modelo, melhores_hyperparamentros
 
-def cv_val_split(dados, p_val=0.1, rng = None):
+def cv_val_split(dados: pd.DataFrame,
+                 p_val:int =0.1,
+                 rng = None)->Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     '''
     ----------------------------------------------------------------------------
     Divide os dados entre Cross Validation (treino+test) e validacao
@@ -285,7 +291,9 @@ def cv_val_split(dados, p_val=0.1, rng = None):
     
     return x_cv, x_val, y_cv, y_val
 
-def desempenho_dos_modelos(modelos, x, y):
+def desempenho_dos_modelos(modelos: BaseEstimator,
+                           x: pd.DataFrame ,
+                           y: pd.Series)->pd.DataFrame:
     '''
     ---------------------------------------------------------------
     Plota a matriz de confusao 
@@ -320,15 +328,18 @@ def desempenho_dos_modelos(modelos, x, y):
                                       }).sort_values('AUC', ascending=False, ignore_index=True)
     return modelos_desempenho
 
-def treina(modelo, x, y, parameters,
-           n_splits=5, 
-           n_repeats=10, 
-           n_iter=10, 
-           n=10, 
+def treina(modelo: BaseEstimator,
+           x: pd.DataFrame ,
+           y: pd.Series, 
+           parameters: Dict,
+           n_splits:int=5, 
+           n_repeats:int=10, 
+           n_iter:int=10, 
+           n:int=10, 
            rng = None, 
-           plota=True,
-           pasta_saida_fig='./',
-           f_save_fig=False):
+           plota:bool=True,
+           pasta_saida_fig:str='./',
+           f_save_fig:bool=False)->Tuple[BaseEstimator, pd.DataFrame, Dict]:
     '''
     ----------------------------------------------------------------------------
     Treina e mostra os resultados
@@ -374,11 +385,11 @@ def treina(modelo, x, y, parameters,
                          pasta_saida_fig=pasta_saida_fig,
                          f_save_fig=True)
 
-    pd = resultados_treinamento(resultados, melhor_modelo, hyperparametros, n = n)
+    df = resultados_treinamento(resultados, melhor_modelo, hyperparametros, n = n)
 
-    return melhor_modelo, pd, melhor_metrica
+    return melhor_modelo, df, melhor_metrica
 
-def obtem_media_e_std_do_melhor_teste_cv(res):
+def obtem_media_e_std_do_melhor_teste_cv(res: pd.DataFrame)->Tuple[float, float]:
     '''
     -----------------------------------------------------------------
     Obtem informacoes do melhor modelo do Cross Validation
@@ -395,7 +406,7 @@ def obtem_media_e_std_do_melhor_teste_cv(res):
     
     return media, std
 
-def obtem_nome_modelo(modelo):
+def obtem_nome_modelo(modelo:BaseEstimator)->str:
     '''
     --------------------------------------------------------------------
     Obtem o nome do modelo de ML

@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
+from typing import Tuple, NewType, Dict
 
-def pacientes_por_janela_ICU(dados):
+def pacientes_por_janela_ICU(dados: pd.DataFrame)->Tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
   '''
   ------------------------------------------------------------------------------
   Função que conta se o paciente esta ou não na UTI para cada janela
@@ -24,11 +25,12 @@ def pacientes_por_janela_ICU(dados):
   print('Janela 0-2 :' ,len(ICU_window_0_2))
   print('Janela 2-4 :' ,len(ICU_window_2_4))
   print('Janela 4-6 :' ,len(ICU_window_4_6))
-  print('Janela 6-12:',len(ICU_window_6_12))
+  print('Janela 6-12:' ,len(ICU_window_6_12))
 
   return ICU_window_0_2, ICU_window_2_4, ICU_window_4_6, ICU_window_6_12
   
-def colunas_com_apenas_n_valores_unicos(dados, n=2, ci=13, cf=228):
+def colunas_com_apenas_n_valores_unicos(dados: pd.DataFrame, n: int =2,
+                                        ci: int =13, cf: int=228):
   '''
   ------------------------------------------------------------------------------
   Mostra todas as colunas que so tem n dados unicos
@@ -45,7 +47,7 @@ def colunas_com_apenas_n_valores_unicos(dados, n=2, ci=13, cf=228):
     if len( dados[name].unique()) < n + 1:
       print(f'{name:20} ->', dados[name].unique())
 
-def retira_paciente_primeira_janela(matriz):
+def retira_paciente_primeira_janela(matriz: pd.DataFrame)-> pd.DataFrame:
   '''
   ------------------------------------------------------------------------------
   Retira da base de dados os pacientes que foram para UTI na pimeira janela
@@ -63,7 +65,7 @@ def retira_paciente_primeira_janela(matriz):
 
   return matriz
 
-def submatriz_preenchimento(submatriz):
+def submatriz_preenchimento(submatriz: pd.DataFrame) -> pd.DataFrame:
   '''
   ------------------------------------------------------------------------------
   Preenche as variaveis continuas utilizando. Esta função trabalho com submatriz
@@ -92,7 +94,7 @@ def submatriz_preenchimento(submatriz):
   return submatriz_preenchida
 
 
-def preenchendo_var_continuas(matriz):
+def preenchendo_var_continuas(matriz: pd.DataFrame)-> pd.DataFrame:
 
   '''
   ------------------------------------------------------------------------------
@@ -113,7 +115,7 @@ def preenchendo_var_continuas(matriz):
   return matriz_preenchida
 
 
-def uma_linha_por_paciente(submatriz):
+def uma_linha_por_paciente(submatriz: pd.DataFrame)-> pd.DataFrame:
   '''
   ------------------------------------------------------------------------------
   Reduz todas as janelas do paciente a apenas um linha. Os valores são pegos

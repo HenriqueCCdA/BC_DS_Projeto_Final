@@ -1,6 +1,13 @@
 import csv 
+#
+from typing import List, NewType, Dict
+import numpy as np
+import pandas as pd
+from sklearn.base import BaseEstimator
 
-def dimensao_dados(dados):
+Array1D = NewType('Arranjo 1D',  pd.Series)
+
+def dimensao_dados(dados: pd.DataFrame):
     '''
     --------------------------------------------------------
     Mostra o numero de linhas e colunas do DataFrame
@@ -12,7 +19,7 @@ def dimensao_dados(dados):
     print(f"Numero de linhas : {nl} ")
     print(f"Numero de colunas: {nc} ")
     
-def variaveis_explicativas(dados, ncols=2):
+def variaveis_explicativas(dados: pd.DataFrame, ncols: int =2)-> List[str]:
     '''
     --------------------------------------------------------
     Mostra o numero de linhas e colunas do DataFrame
@@ -44,7 +51,7 @@ def variaveis_explicativas(dados, ncols=2):
         
     return columns
     
-def mostra_todas_as_colunas_com(dados, string):
+def mostra_todas_as_colunas_com(dados: pd.DataFrame, string: str):
     '''
     --------------------------------------------------------
     Mostra todas as colunas com a string no nome
@@ -58,7 +65,7 @@ def mostra_todas_as_colunas_com(dados, string):
         if string in name:
             print(name)
             
-def escreve_somente_as_colunas(dados, arquivo='colunas.csv'):
+def escreve_somente_as_colunas(dados: pd.DataFrame, arquivo: str='colunas.csv'):
     '''
     ----------------------------------------------------------------------------
     Escreve o nome das colunas do dataframe em arquivo diferente
@@ -75,7 +82,7 @@ def escreve_somente_as_colunas(dados, arquivo='colunas.csv'):
         for i, row in enumerate(dados.columns):
             writer.writerow([i, row])
                         
-def proporcao_y(y):
+def proporcao_y(y: pd.Series):
     '''
     ----------------------------------------------------------------------------
     Mostra a proporcao do y 
@@ -89,7 +96,7 @@ def proporcao_y(y):
     for l , v in zip(p.index, p.values):
         print(f"Campo {l} ->  {v*100:.2f}%")
         
-def numero_teste_treino_val(y, y_val, y_cv):
+def numero_teste_treino_val(y: Array1D, y_val: Array1D, y_cv: Array1D):
     '''
     ------------------------------------------------------------------------
     Mostra o numero de entradas em cada dataset
@@ -100,9 +107,19 @@ def numero_teste_treino_val(y, y_val, y_cv):
     print(f'Número total de entradas para validacao          : {len(y_val)}')
     print(f'Número total de entradas para o Cross Validation : {len(y_cv)}')
     
-def resultados_treinamento(resultados, modelo, hyperparametros, n = 5):
+def resultados_treinamento(resultados: pd.DataFrame, 
+                           modelo:BaseEstimator , 
+                           hyperparametros: Dict, n: int = 5)->pd.DataFrame:
     '''
+    --------------------------------------------------------------------------
     Mostra os resltados do modelo treinado
+    --------------------------------------------------------------------------
+    @param Resultados      - DataFrame com os resultados
+    @param modelo          - Modelo de classifica do sklearn
+    @param hyperparametros - Dicionario com os hyperparamentros
+    @param n               - Numero linhas do DataFrame de resultados que serao 
+                             retornados
+    --------------------------------------------------------------------------
     '''
     print(f'melhores hyperparametros : {hyperparametros}')
     print(f'Melhor modelo            : {modelo}')

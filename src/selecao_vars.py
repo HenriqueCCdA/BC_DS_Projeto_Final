@@ -1,6 +1,9 @@
+import pandas as pd
 import numpy as np
 
-def remove_corr_valor_de_corte(dados, valor_corte):
+from typing import Tuple, List
+
+def remove_corr_valor_de_corte(dados: pd.DataFrame, valor_corte: int)-> Tuple[pd.DataFrame,List[str]]:
     '''
     ----------------------------------------------------------------------------
     Remove as colunas com valores de correlação maior que que o valor_corte

@@ -4,9 +4,14 @@ from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import plot_roc_curve
+import pandas as pd
+from typing import List,Dict
+from sklearn.base import BaseEstimator
 
 #********************************************************************* 
-def plot_barras(titulo, x, y, xlim, n_colors=10):
+def plot_barras(titulo: str, x: pd.DataFrame,
+                y: pd.Series, xlim: List[float],
+                n_colors:int =10):
     '''
     ---------------------------------------------------------------
     Plota graficos de barras com seaborn 
@@ -53,7 +58,7 @@ def plot_barras(titulo, x, y, xlim, n_colors=10):
 #*********************************************************************     
     
 #*********************************************************************     
-def plot_barras_grupos(dados, titulo):
+def plot_barras_grupos(dados: pd.DataFrame, titulo: str):
     '''
     ---------------------------------------------------------------
     Plota graficos de barras com seaborn usando hue
@@ -101,7 +106,7 @@ def plot_barras_grupos(dados, titulo):
 #********************************************************************* 
 
 #********************************************************************* 
-def plota_matriz_correlacao(dados, matriz = 'upper'):
+def plota_matriz_correlacao(dados: pd.DataFrame, matriz: str = 'upper'):
     '''
     ----------------------------------------------------------------------------
     Plota a matiz de correlação
@@ -151,9 +156,13 @@ def plota_matriz_correlacao(dados, matriz = 'upper'):
 #********************************************************************* 
 
 #********************************************************************* 
-def plota_treino_teste_auc(nome_modelo, teste_auc, treino_auc, rank, hp_melhor,
-                           pasta_saida_fig='./',
-                           f_save_fig=False):
+def plota_treino_teste_auc(nome_modelo: str, 
+                           teste_auc, 
+                           treino_auc, 
+                           rank, 
+                           hp_melhor:Dict,
+                           pasta_saida_fig:str='./',
+                           f_save_fig:bool=False):
     '''
     ------------------------------------------------------------
     Plota a curva AUC para o teste de hyperparamentros
@@ -215,7 +224,8 @@ def plota_treino_teste_auc(nome_modelo, teste_auc, treino_auc, rank, hp_melhor,
 #********************************************************************* 
     
 #*********************************************************************     
-def plota_matriz_de_confusao(modelos, x, y):
+def plota_matriz_de_confusao(modelos: List[BaseEstimator],
+                            x: pd.DataFrame, y: pd.Series):
     '''
     ---------------------------------------------------------------
     Plota a matriz de confusao 
@@ -236,7 +246,8 @@ def plota_matriz_de_confusao(modelos, x, y):
 #*********************************************************************    
 
 #*********************************************************************    
-def plota_curva_roc(modelos, titulo, x, y):
+def plota_curva_roc(modelos: List[BaseEstimator], titulo: str,
+                    x: pd.DataFrame, y: pd.Series):
     '''
     ---------------------------------------------------------------
     Plota a curva ROC 
