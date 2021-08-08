@@ -54,7 +54,7 @@ O Dados limpos estão no arquivo [dados_tratados_por_paciente.csv](https://githu
 Foram feitas 4 seleções de variaveis explicativas, elas foram:
 
 * Seleção através da matriz de correlação. O limite de correção foi 0.9. Após o procedimentos chegou-se a **41** variaveis explicativas. Chamaremos o conjuto de dados de **df_coor_41**.
-  * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/tree/main/Notebooks/Exploratorios). 
+  * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis.ipynb). 
   * [Base](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte.csv) e [variaveis selecionas](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte_colunas.csv). 
 
 * Seleção através da matriz de correlação e da tecinca recursive feature elimination (RFE).  O limete de correção foi novamente 0.9 e o modelo usado no **RFE** foi a **LogisticRegression**. Um consjutp de **20** e **30** variaveis foram obtidos. Chamaremos os conjuto sde dados de **df_RFE_20** e **df_RFE_30**
@@ -125,7 +125,7 @@ Finalmente agora temos um modelo de ML capaz de predizer com um certo grau de ac
 * Ordem indica de leitura dos notebooks:
 
 1. [Limpeza e Exploração dos dados](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
-2. [Seleção de variaveis - Método 1](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
+2. [Seleção de variaveis - Método 1](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis.ipynb)
 3. [Seleção de variaveis - Método 2](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis_sklearn.ipynb)
 4. [Seleção de variaveis - Método 3](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Selecao_variaveis/selecao_variaveis_featurewiz.ipynb)
 5. [Primeiro Treinamento na base df_coor_41](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treinamentos_dados1.ipynb)
