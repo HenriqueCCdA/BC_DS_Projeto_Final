@@ -1,5 +1,7 @@
 # Repositório do projeto final do BootCamp Data Science da Alura
 
+# Análise
+
 ## 1) Introdução
 
 Logo no início da pandêmia de **Covid-19** em 2020 um fator que ficou claro foi a alta demanda de UTIs para o tratamento dos doentes. Sem um tratamento adquado a **taxa de mortalidade** aumenta de maneira alarmante.
@@ -13,7 +15,6 @@ Este estudo tem como objetivo escolher um modelo de Machine Learning (ML) que co
 ### 1.3) Metodologia
 
 Através de disponibilidados pelo hospital [Sírio-Libanês](https://www.kaggle.com/S%C3%ADrio-Libanes/covid19) serão rodas 6 modelos de Machine Learning (ML). Para escolha do melhor modelo foi utlizado a tecinica de validação crusada (Cross Validation), ajuste de hyperparametros e seleção de variaveis explicativas. Foram feita 4 posibilidades de variaveis explicativas. 
-
 
 ## 2) Dados brutos
 
@@ -70,3 +71,43 @@ Os todos os **conjuto de dados (dataset)** foram dividos em um dataset para **Va
 Iniciamentel foi utilização **df_coor_41** para uma analise mais detalhada, o que pode se encontrado [Neste notebbok](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treinamentos_dados1.ipynb). Neste notebook chega-se a conlusão que o melhor modelo é **Random Forest Tree** com **ROC_AUC** de **0.78** no dataset de **validação** e media de **0.81** na **validação cruzada**.
 
 Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outra de 3 bases restantes. Nele novamente concluimos que *Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25** que obteve **0.835913** no dataset de **validação** e **0.817647** não meida dos teste na **validação cruzada**
+
+# Informações importantes do reppsitório:
+
+* Estrutura de diretorios do repositório:
+
+```
+└──Dados
+|  ├── Brutos - Dados brutos
+|  └── Tratrados - Dados Tratados 
+|
+└──Notebooks
+|  ├── Explaratorios - Notebooks exploatorios e de limpeza
+|  ├── Seleção_variaveis - Notebbooks de seleção de variaveis 
+|  └── ML - Notebbooks com os treinamentos dos modelos 
+|           
+└── src - Arquivos fonte python   
+```
+
+* Ordem indica de leitura dos notebooks:
+
+1. [Limpeza e Exploração dos dados](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
+2. [Seleção de variaveis - Método 1](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
+3. [Seleção de variaveis - Método 2](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Selecao_variaveis/selecao_variaveis_sklearn.ipynb)
+4. [Seleção de variaveis - Método 3](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Selecao_variaveis/selecao_variaveis_featurewiz.ipynb)
+5. [Primeiro Treinamento na base df_coor_41](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/ML/treinamentos_dados1.ipynb)
+6. [Treinamento com a 4 bases](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/ML/treina_diferentes_var_explicativas.ipynb)
+
+* Libs utilizadas:
+  * matplotlib   -> 3.3.4
+  * sklean       -> 0.24.2
+  * pandas       -> 1.2.4
+  * scipy        -> 1.6.0
+  * numpy        -> 1.20.2
+  * sns          -> 0.11.1
+  * freaturewiz  -> 0.0.42
+
+
+
+
+
