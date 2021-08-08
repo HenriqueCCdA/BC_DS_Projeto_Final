@@ -44,7 +44,7 @@ O tratamento foi basicamente:
 4. Apenas informoções dos pacientes da primeira janela. Assim temos uma linha por paciente.
 5. Transformação da colunas AGE_PERCENTIL para numérica.
 6. Descarte das colunas WINDOW e PATIENT_VISIT_IDENTIFIER.
-7. Descaste das colunas com variancia menor que 0.01.
+7. Descarte das colunas com variancia menor que 0.01.
 
 O Dados limpos estão no arquivo [dados_tratados_por_paciente.csv](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_tratados_por_paciente.csv). Para uma consulta rápida das variaveis neste aquivo pode-se olhar o aquivo [dados_tratados_por_paciente_colunas.csv](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_tratados_por_paciente_colunas.csv) com apenas os nomes da colunas (ppssível variaveis + o alvo(ICU)).
 
@@ -78,7 +78,7 @@ Foram escolhidos 6 modelos de ML, são eles:
 * Support Vector Machine
 * KNeighbors
 
-Para a escolha do melhor modelo foi feita uma busca de hyperparametros. A buscas foi evetuda pelo GridSearchCV ou pelo RandomizedSearchCV. Para a **Cross Validation** foi usado **RepeatedStratifiedKFold** com **5** divições de **10** repetições. O parâmetro utilizado para avaliação do modelo foi a **ROC_AUC**. A quantidade de **falsos negativos** (FN) também é uma metrica crítica da nosso problema. UM bom modelo tem que ter um **ROC_AUC** alto e um **FN** baixo. O **FN** neste caso significa mandar um paciente que precisaria de UTI para casa.
+Para a escolha do melhor modelo foi feita uma busca de hyperparametros. A buscas foi evetuda pelo GridSearchCV ou pelo RandomizedSearchCV. Para a **Cross Validation** foi usado **RepeatedStratifiedKFold** com **5** divisões de **10** repetições. O parâmetro utilizado para avaliação do modelo foi a **ROC_AUC**. A quantidade de **falsos negativos** (FN) também é uma metrica crítica da nosso problema. UM bom modelo tem que ter um **ROC_AUC** alto e um **FN** baixo. O **FN** neste caso significa mandar um paciente que precisaria de UTI para casa.
 
 Os todos os **conjuto de dados (dataset)** foram dividos em um dataset para **Validação cruzada (Cross Validation)** e um de **validação**. A divisão ficou **351** para **validação cruzada** e 36 para a **validação**. A escolha do método se deu tanto pela avaliação do desempenho do modelo no conjuto de dados de **validação** quanto nas métricas médias e desvio padrão dos testes da **Validação cruzada**.
 
