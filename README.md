@@ -89,7 +89,7 @@ Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Fi
 ---
 # 6) Modelo final 
 
-O modelo final excolhifo foi **Random Forest Tree** com o conjuto de variveis explicativas do **df_featurewiz_25** ([lista das variaveis](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_featurewiz_colunas.csv)). O modelo utilizando todas as 351 amostras e foi treinado [neste notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/ML/Treinamento_modelo_final.ipynb). O modelo treinando foi salvo com a lib **joblib** no arquivo [modelo_final.sav](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Modelo_ML/modelo_final.sav). 
+O modelo final excolhifo foi **Random Forest Tree** com o conjuto de variveis explicativas do **df_featurewiz_25** ([lista das variaveis](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_featurewiz_colunas.csv)). O modelo utilizando todas as 351 amostras e foi treinado [neste notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/Treinamento_modelo_final.ipynb). O modelo treinando foi salvo com a lib **joblib** no arquivo [modelo_final.sav](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Modelo_ML/modelo_final.sav). 
 
 
 ---
