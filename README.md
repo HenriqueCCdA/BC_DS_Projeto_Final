@@ -84,7 +84,7 @@ Os todos os **conjuto de dados (dataset)** foram dividos em um dataset para **va
 
 Iniciamentel foi utilização **df_coor_41** para uma analise mais manual do treinamento, o que pode se encontrado [Neste notebbok](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treinamentos_dados1.ipynb). Nele chega-se a conlusão que o melhor modelo é **Random Forest Tree** com **ROC_AUC** de **0.78** no dataset de **validação** e média de **0.81** na **validação cruzada**.
 
-Após isto, em um outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outras **3** bases restantes. Nele novamente concluimos que **Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25**, ela obteve **0.835913** no dataset de **validação** e **0.817647** na média dos teste na **validação cruzada**
+Após isto, em um outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outras **3** bases restantes. Nele novamente concluimos que **Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25**, ela obteve **0.839** no dataset de **validação** e **0.817** na média dos teste na **validação cruzada**
 
 ---
 # 6) Modelo final 
