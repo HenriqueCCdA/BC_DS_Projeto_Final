@@ -15,7 +15,7 @@ parameters_random_forest = {'n_estimators'    : [100, 150, 200, 250, 300, 350, 4
               'max_depth'       : np.arange(1, 21),
               'criterion'       : ['gini', 'entropy'],
               'min_samples_leaf': np.arange(1, 6),
-              'max_leaf_nodes'  : np.arange(2, 6)
+              'max_leaf_nodes'  : np.arange(2, 11)
              }
 
 parameters_svc = {'kernel'          : ['linear', 'poly', 'rbf', 'sigmoid'],
