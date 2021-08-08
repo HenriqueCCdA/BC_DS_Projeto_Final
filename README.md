@@ -1,7 +1,17 @@
+![](https://img.shields.io/github/last-commit/HenriqueCCdA/bootCampAluraDataScience?style=plasti&ccolor=blue)
+![](https://img.shields.io/badge/Autor-Henrique%20C%20C%20de%20Andrade-blue)
+
+![](https://play-lh.googleusercontent.com/E5OY3A9Nf-XieZN5Ah6KfPIDbFpLR_j5fFOLbl-aYDrRiFAvensqRJjZpWFRA_yyNg)
+
+
 # Repositório do projeto final do BootCamp Data Science da Alura
 
+---
+---
 # Análise
 
+
+---
 ## 1) Introdução
 
 Logo no início da pandêmia de **Covid-19** em 2020 um fator que ficou claro foi a alta demanda de UTIs para o tratamento dos doentes. Sem um tratamento adquado a **taxa de mortalidade** aumenta de maneira alarmante.
@@ -16,10 +26,12 @@ Este estudo tem como objetivo escolher um modelo de Machine Learning (ML) que co
 
 Através de disponibilidados pelo hospital [Sírio-Libanês](https://www.kaggle.com/S%C3%ADrio-Libanes/covid19) serão rodas 6 modelos de Machine Learning (ML). Para escolha do melhor modelo foi utlizado a tecinica de validação crusada (Cross Validation), ajuste de hyperparametros e seleção de variaveis explicativas. Foram feita 4 posibilidades de variaveis explicativas. 
 
+---
 ## 2) Dados brutos
 
 Os dados brutos foram tirados do projeto do kaggle [Sírio-Libanês](https://www.kaggle.com/S%C3%ADrio-Libanes/covid19). O dados podem ser ser achado neste repositório no arquivo [Kaggle_Sirio_Libanes_ICU_Prediction.xlsx](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Brutos/Kaggle_Sirio_Libanes_ICU_Prediction.xlsx)
 
+---
 ## 3) Exploração e limepeza dos dados.
 
 A exploração e limpeza dos dados foram feitas no notebook foi feita [neste notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
@@ -36,6 +48,7 @@ O tratamento foi basicamente:
 
 O Dados limpos estão no arquivo [dados_tratados_por_paciente.csv](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_tratados_por_paciente.csv). Para um consulta rápida das variaveis neste aquivo pode-se olhar o aquivo [dados_tratados_por_paciente_colunas.csv](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_tratados_por_paciente_colunas.csv) com apenas os nomes da colunas (variaveis).
 
+---
 ## 4) Seleção das variaveis explicativas.
 
 Foram feitas 4 seleções de variaveis explicativas, elas foram:
@@ -53,6 +66,7 @@ Foram feitas 4 seleções de variaveis explicativas, elas foram:
   * [Notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_featurewiz.csv). 
   * [Base](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/main/Dados/Tratados/dados_sem_corr_acima_do_valor_de_corte.csv) e [variaveis selecionas](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f697031ff0e4d92d3e105f7483f81c8bc574603/Dados/Tratados/dados_featurewiz_colunas.csv).
 
+---
 ## 5) Modelos de machine learning (ML)
 
 Foram escolhidos 6 modelos de ML, são eles: 
@@ -70,10 +84,26 @@ Os todos os **conjuto de dados (dataset)** foram dividos em um dataset para **Va
 
 Iniciamentel foi utilização **df_coor_41** para uma analise mais detalhada, o que pode se encontrado [Neste notebbok](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treinamentos_dados1.ipynb). Neste notebook chega-se a conlusão que o melhor modelo é **Random Forest Tree** com **ROC_AUC** de **0.78** no dataset de **validação** e media de **0.81** na **validação cruzada**.
 
-Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outra de 3 bases restantes. Nele novamente concluimos que *Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25** que obteve **0.835913** no dataset de **validação** e **0.817647** não meida dos teste na **validação cruzada**
+Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/f1f6ed9c9822007606f3dd189bce4602eab5ce5f/Notebooks/ML/treina_diferentes_var_explicativas.ipynb), foi analisado as outra de 3 bases restantes. Nele novamente concluimos que **Random Forest Tree** é a melhor opção. Além disso a melhor seleção de variaveis foi **df_featurewiz_25** que obteve **0.835913** no dataset de **validação** e **0.817647** não meida dos teste na **validação cruzada**
 
-# Informações importantes do reppsitório:
+---
+# 6) Modelo final 
 
+O modelo final excolhifo foi **Random Forest Tree** com o conjuto de variveis explicativas do **df_featurewiz_25** ([lista das variaveis](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/1f0ee0858b6b2077764d333e96828aa12a627ceb/Dados/Tratados/dados_featurewiz_colunas.csv)). O modelo utilizando todas as 351 amostras e foi treinado [neste notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Notebooks/ML/Treinamento_modelo_final.ipynb). O modelo treinando foi salvo com a lib **joblib** no arquivo [modelo_final.sav](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Modelo_ML/modelo_final.sav). 
+
+
+---
+# 7) Conclusão
+
+Finalmente agora temos um modelo de ML capaz de predizer com um certo grau de acuracia se o paciente irá precisar ao não de UTI apenas com os dados clínicos de horas antes.
+
+---
+---
+
+# Informações importantes do repositório:
+---
+
+---
 * Estrutura de diretorios do repositório:
 
 ```
@@ -86,9 +116,12 @@ Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Fi
 |  ├── Seleção_variaveis - Notebbooks de seleção de variaveis 
 |  └── ML - Notebbooks com os treinamentos dos modelos 
 |           
-└── src - Arquivos fonte python   
+└── src - Arquivos fontes python   
+|           
+└── Modelo_ML - Modelos de ML salvos  
 ```
 
+---
 * Ordem indica de leitura dos notebooks:
 
 1. [Limpeza e Exploração dos dados](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Exploratorios/explaracao_limpezada.ipynb)
@@ -97,7 +130,9 @@ Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Fi
 4. [Seleção de variaveis - Método 3](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/Selecao_variaveis/selecao_variaveis_featurewiz.ipynb)
 5. [Primeiro Treinamento na base df_coor_41](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/ML/treinamentos_dados1.ipynb)
 6. [Treinamento com a 4 bases](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/efdda8c44c7ff773bc6550263ee02206a734312c/Notebooks/ML/treina_diferentes_var_explicativas.ipynb)
+7. [Treinamento do modelo final](https://github.com/HenriqueCCdA/BC_DS_Projeto_Final/blob/571f5ccf748bbf12ad681e7e2507e0b3b43eeca8/Notebooks/ML/Treinamento_modelo_final.ipynb)
 
+---
 * Libs utilizadas:
   * matplotlib   -> 3.3.4
   * sklean       -> 0.24.2
@@ -106,6 +141,7 @@ Após isto, em outro [notebook](https://github.com/HenriqueCCdA/BC_DS_Projeto_Fi
   * numpy        -> 1.20.2
   * sns          -> 0.11.1
   * freaturewiz  -> 0.0.42
+  * joblib       -> 1.0.1
 
 
 
